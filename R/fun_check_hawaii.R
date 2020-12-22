@@ -61,8 +61,8 @@ check_endemic_hawaii <- function(
   # prepare points for voronoi
   voronoi_points <- Reduce(rbind, region_demarcation_points)
   voronoi_points <- sf::st_multipoint(voronoi_points)
-  voronoi_points <- sf::st_sfc(voronoi_points)
-  sf::st_crs(voronoi_points) <- 4326
+  # voronoi_points <- sf::st_sfc(voronoi_points)
+  # sf::st_crs(voronoi_points) <- 4326
   hawaii_voronoi <- sf::st_voronoi(voronoi_points,
                                    sf::st_union(hawaii_unified_buffer))
   # convert to sfc
@@ -79,8 +79,16 @@ check_endemic_hawaii <- function(
     sf::st_intersection(hawaii_unified_buffer, x)
   })
 
-  # remove the voronoi and other objects
-  rm(hawaii_voronoi, hawaii_unified_buffer, voronoi_points)
+  # c the voronoi buffer
+  hawaii_voronoi <- Reduce(c, hawaii_voronoi)
+  # prep the point for id as sfc
+  voronoi_points <- sf::st_sfc(voronoi_points, crs = 4326)
+
+  # which area has which name
+  name_order <- sf::st_within(st_cast(voronoi_points, "POINT"),
+                              hawaii_voronoi)
+  # unlist
+  name_order <- unlist(name_order)
 
   # union these components of the split
   hawaii_split_buffer <- lapply(hawaii_split_buffer, sf::st_union)
@@ -95,7 +103,10 @@ check_endemic_hawaii <- function(
     )
   })
 
-  return(overlaps)
+  # make data
+  overlaps <- data.frame(region = names(region_demarcation_points)[name_order],
+                         p_species_range = unlist(overlaps))
 
+  return(overlaps)
 
 }
