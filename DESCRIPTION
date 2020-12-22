@@ -1,5 +1,5 @@
 Package: endemicr
-Title: Tools to Determine Endemicity.
+Title: Tools to Determine Endemicity
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Pratik Rajan",
