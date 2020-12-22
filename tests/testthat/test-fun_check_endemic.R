@@ -17,4 +17,14 @@ test_that("basic functionality works", {
   testthat::expect_true(
     is.numeric(how_endemic)
   )
+
+  # expect fail
+  testthat::expect_error(
+    end_check_endemic(
+      aoi = "anyoldtext",
+      utm_epsg_code = 2782,
+      buffer_distance_km = 1,
+      sp_range = "alsogarbage"
+    )
+  )
 })
