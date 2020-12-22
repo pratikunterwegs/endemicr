@@ -15,10 +15,9 @@
 #' appropriate to the area of interest. Necessary to draw buffers in metres when
 #' the coordinates are provided in longitude-latitude.
 #'
-#' @return
+#' @return The proportion of the species range within a buffer around the area
+#' of interest.
 #' @export
-#'
-#' @examples
 end_check_endemic <- function(aoi,
                               utm_epsg_code,
                               buffer_distance_km,
