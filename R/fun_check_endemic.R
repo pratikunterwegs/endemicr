@@ -26,11 +26,11 @@ end_check_endemic <- function(aoi,
   # process area of interest
   aoi <- end_check_area(aoi)
   # examine species range for issues
-  species_range <- end_check_area(species_range)
+  sp_range <- end_check_area(sp_range)
 
   # check for geographic system on area of interest
   # and check that UTM EPSG code is valid
-  if (st_is_longlat(aoi)) {
+  if (sf::st_is_longlat(aoi)) {
 
     assertthat::assert_that(
       is.numeric(utm_epsg_code),
@@ -68,18 +68,18 @@ end_check_endemic <- function(aoi,
   # check intersection with species range
   # first check for matching crs
   assertthat::assert_that(
-    sf::st_crs(aoi_buffer) == sf::st_crs(species_range),
+    sf::st_crs(aoi_buffer) == sf::st_crs(sp_range),
     msg = "check_endemic: area and species range CRS are not equal"
   )
 
   # get intersection
-  overlap <- sf::st_intersection(aoi_buffer, species_range)
+  overlap <- sf::st_intersection(aoi_buffer, sp_range)
 
   # get
   # proportion of species range represented by the ovelap
   # with the area of interest
   # this is somewhat sensitive to the buffer size
-  pct_range <- sf::st_area(overlap) / sf::st_area(species_range)
+  pct_range <- sf::st_area(overlap) / sf::st_area(sp_range)
 
   return(pct_range)
 
