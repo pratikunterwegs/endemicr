@@ -31,7 +31,6 @@ end_check_endemic <- function(aoi,
   # check for geographic system on area of interest
   # and check that UTM EPSG code is valid
   if (sf::st_is_longlat(aoi)) {
-
     assertthat::assert_that(
       is.numeric(utm_epsg_code),
       msg = "check_endemic: EPSG code is not numeric"
@@ -44,8 +43,10 @@ end_check_endemic <- function(aoi,
     )
 
     # transform area of interest to the supplied UTM CRS
-    aoi <- sf::st_transform(x = aoi,
-                            crs = utm_epsg_code)
+    aoi <- sf::st_transform(
+      x = aoi,
+      crs = utm_epsg_code
+    )
   }
 
 
@@ -57,12 +58,16 @@ end_check_endemic <- function(aoi,
     # flatten features using st union
     aoi <- sf::st_union(aoi)
     # prepare buffer which is an sfc_multipolygon
-    aoi_buffer <- sf::st_buffer(x = aoi,
-                                dist = buffer_distance_km)
+    aoi_buffer <- sf::st_buffer(
+      x = aoi,
+      dist = buffer_distance_km
+    )
 
     # retransform to geographic coordinates
-    aoi_buffer <- sf::st_transform(x = aoi_buffer,
-                                   crs = 4326)
+    aoi_buffer <- sf::st_transform(
+      x = aoi_buffer,
+      crs = 4326
+    )
   }
 
   # check intersection with species range
@@ -82,5 +87,4 @@ end_check_endemic <- function(aoi,
   pct_range <- sf::st_area(overlap) / sf::st_area(sp_range)
 
   return(pct_range)
-
 }

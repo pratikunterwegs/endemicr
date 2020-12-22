@@ -12,7 +12,6 @@ end_check_area <- function(spatial_data) {
   # check for character assumed to be filename
   # throws sf error if invalid
   if (!"sf" %in% class(spatial_data)) {
-
     aoi <- sf::st_read(spatial_data)
 
     # check for polygon
