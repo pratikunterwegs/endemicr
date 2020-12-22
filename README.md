@@ -4,8 +4,9 @@
   [![R build status](https://github.com/pratikunterwegs/endemicr/workflows/R-CMD-check/badge.svg)](https://github.com/pratikunterwegs/endemicr/actions)
 <!-- badges: end -->
 
+## Install
 
-```
+```r
 # install using devtools or remotes
 devtools::install_github("pratikunterwegs/endemicr")
 ```
