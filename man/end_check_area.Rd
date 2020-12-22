@@ -4,12 +4,14 @@
 \alias{end_check_area}
 \title{Check and read data.}
 \usage{
-end_check_area(spatial_data)
+end_check_area(spatial_data, check_polygon = TRUE)
 }
 \arguments{
 \item{spatial_data}{A spatial representation of the area to read.
 May be any GDAL compatible file, or an \code{sf}-*POLYGON.
 Assumed to be in the WGS84 system (normal long-lat).}
+
+\item{check_polygon}{Whether to check for POLYGON type and break if not.}
 }
 \value{
 An sf polygon object.
