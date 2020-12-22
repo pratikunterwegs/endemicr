@@ -41,17 +41,17 @@ end_check_endemic <- function(aoi,
       !sf::st_is_longlat(sf::st_crs(utm_epsg_code)),
       msg = "check_endemic: EPSG code is for a geographic system"
     )
+  }
+
+
+  # draw polygon buffer if greater than 0
+  if (buffer_distance_km > 0) {
 
     # transform area of interest to the supplied UTM CRS
     aoi <- sf::st_transform(
       x = aoi,
       crs = utm_epsg_code
     )
-  }
-
-
-  # draw polygon buffer if greater than 0
-  if (buffer_distance_km > 0) {
 
     # convert argument to metres
     buffer_distance_km <- buffer_distance_km * 1000
@@ -68,6 +68,8 @@ end_check_endemic <- function(aoi,
       x = aoi_buffer,
       crs = 4326
     )
+  } else {
+    aoi_buffer <- aoi
   }
 
   # check intersection with species range
