@@ -20,7 +20,7 @@ data representations of land features of Hawaii.}
 coast of Hawaii land features should species be considered to occur 'in/on/
 off Hawaii'?}
 
-\item{region_demarcation_points}{A data.frame, matrix, or list of 2-element
+\item{region_demarcation_points}{A list of 2-element
 vectors which will be used to construct Voronoi polygons from the
 Hawaii buffer. Set to Niihau (main_islands) and Nihoa (NWHI).}
 
