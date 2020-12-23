@@ -25,11 +25,11 @@ library(sf)
 
 ```{r}
 # prepare hawaii boundaries
-hawaii_boundaries <- list("inst/boundary_main_islands/",
-                          "inst/boundary_nwhi/")
+hawaii_boundaries <- list("../inst/boundary_main_islands/",
+                          "../inst/boundary_nwhi/")
 
 # prepare fish range as string
-fish_range <- "tests/testdata/example_fish.shp"
+fish_range <- "../tests/testdata/example_fish.shp"
 ```
 
 ## Read and plot Hawaii
@@ -108,7 +108,7 @@ plot(hawaii_buffer,
 
 ```{r}
 # the demarcation points are function defaults for now
-hawaii_regions <- get_voronoi_area(
+hawaii_regions <- demarcate_regions(
   area_of_interest = hawaii_buffer
 )
 
