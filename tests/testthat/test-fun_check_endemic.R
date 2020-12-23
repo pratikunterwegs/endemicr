@@ -1,10 +1,10 @@
 test_that("basic functionality works", {
 
   # prepare hawaii extent as string
-  hawaii <- "../testdata/extent_hawaii.gpkg"
+  hawaii <- sf::st_read("../testdata/extent_hawaii.gpkg")
 
   # prepare fish range as string
-  fish_range <- "../testdata/example_fish.shp"
+  fish_range <- sf::st_read("../testdata/example_fish.shp")
 
   how_endemic <- end_check_endemic(
     aoi = hawaii,
