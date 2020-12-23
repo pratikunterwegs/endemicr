@@ -30,8 +30,10 @@ end_check_area <- function(spatial_data,
     if (check_polygon) {
       # check for polygon
       assertthat::assert_that(
+        all(
         sf::st_geometry_type(spatial_data) == "MULTIPOLYGON" |
           sf::st_geometry_type(spatial_data) == "POLYGON"
+      )
       )
     }
 
