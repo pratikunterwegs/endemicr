@@ -24,28 +24,26 @@ end_check_endemic <- function(aoi,
                               sp_range) {
 
   # process area of interest
-  aoi <- end_check_area(aoi)
+  aoi <- endemicr:::end_check_area(aoi)
   # examine species range for issues
-  sp_range <- end_check_area(sp_range)
-
-  # check for geographic system on area of interest
-  # and check that UTM EPSG code is valid
-  if (sf::st_is_longlat(aoi)) {
-    assertthat::assert_that(
-      is.numeric(utm_epsg_code),
-      msg = "check_endemic: EPSG code is not numeric"
-    )
-
-    # check the EPSG code is for UTM
-    assertthat::assert_that(
-      !sf::st_is_longlat(sf::st_crs(utm_epsg_code)),
-      msg = "check_endemic: EPSG code is for a geographic system"
-    )
-  }
-
+  sp_range <- endemicr:::end_check_area(sp_range)
 
   # draw polygon buffer if greater than 0
   if (buffer_distance_km > 0) {
+    # check for geographic system on area of interest
+    # and check that UTM EPSG code is valid
+    if (sf::st_is_longlat(aoi)) {
+      assertthat::assert_that(
+        is.numeric(utm_epsg_code),
+        msg = "check_endemic: EPSG code is not numeric"
+      )
+
+      # check the EPSG code is for UTM
+      assertthat::assert_that(
+        !sf::st_is_longlat(sf::st_crs(utm_epsg_code)),
+        msg = "check_endemic: EPSG code is for a geographic system"
+      )
+    }
 
     # transform area of interest to the supplied UTM CRS
     aoi <- sf::st_transform(
