@@ -15,7 +15,7 @@ test_that("basic functionality works", {
 
   # check this is a numeric value
   testthat::expect_true(
-    is.numeric(how_endemic)
+    is.data.frame(how_endemic)
   )
 
   # expect fail
