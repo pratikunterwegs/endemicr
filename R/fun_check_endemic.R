@@ -3,7 +3,7 @@
 #' Check endemicity based on species range.
 #'
 #' @param aoi A spatial representation of the area in which the
-#' species is expected to be endemic. May be any GDAL compatible file, or an
+#' species is expected to be endemic. Must be an
 #' \code{sf}-*POLYGON. Assumed to be in the WGS84 system (normal long-lat).
 #' @param buffer_distance_km A buffer distance in kilometres. Primarily
 #' useful for marine species which may be considered endemic to waters off a
@@ -24,9 +24,9 @@ end_check_endemic <- function(aoi,
                               sp_range) {
 
   # process area of interest
-  aoi <- endemicr:::end_check_area(aoi)
+  end_check_area(aoi)
   # examine species range for issues
-  sp_range <- endemicr:::end_check_area(sp_range)
+  end_check_area(sp_range)
 
   # draw polygon buffer if greater than 0
   if (buffer_distance_km > 0) {

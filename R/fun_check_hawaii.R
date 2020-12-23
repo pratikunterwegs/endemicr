@@ -28,13 +28,12 @@ check_endemic_hawaii <- function(
   # polygon check must be off because nwhi are lines
   hawaii_land_features <- lapply(
     X = hawaii_land_features,
-    FUN = endemicr:::end_check_area,
-    check_polygon = FALSE
+    FUN = sf::st_read
   )
 
   # basic checks on species range
   # polygon check is on
-  species_range <- endemicr:::end_check_area(species_range)
+  end_check_area(species_range)
 
   # union features within list of Hawaii features
   hawaii_land_features <- lapply(
