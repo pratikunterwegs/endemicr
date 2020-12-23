@@ -1,0 +1,124 @@
+---
+title: "hawaii_endemic"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{hawaii_endemic}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(endemicr)
+library(sf)
+```
+
+## Get data sources
+
+```{r}
+# prepare hawaii boundaries
+hawaii_boundaries <- list("inst/boundary_main_islands/",
+                          "inst/boundary_nwhi/")
+
+# prepare fish range as string
+fish_range <- "tests/testdata/example_fish.shp"
+```
+
+## Read and plot Hawaii
+
+```{r}
+# prepare extent
+hawaii_extent <- lapply(hawaii_boundaries, function(x) {
+  st_as_sfc(
+    st_bbox(
+      st_union(st_read(x))
+    )
+  )
+})
+
+# bind extents and get full extent
+hawaii_extent <- Reduce(c, hawaii_extent)
+hawaii_extent <- st_as_sfc(
+  st_bbox(hawaii_extent)
+)
+
+# plot for sanity
+plot(hawaii_extent, 
+     col = "aliceblue", 
+     border = "white",
+     main = "Does this look like the right place?"); axis(1); axis(2)
+
+# add islands
+lapply(hawaii_boundaries, function(x) {
+  x <- st_read(x)
+  plot(x, add = TRUE, col = "grey", max.plot = 1)
+})
+```
+
+## Look at fish range
+
+```{r}
+# read in
+fish_range_sf <- st_read(fish_range)
+
+# plot
+plot(fish_range_sf$geometry, 
+     col = "red",
+     border = NA,
+     main = "The global range of this fish", xaxs = "r"); axis(1); axis(2)
+```
+
+## How much of the global range is Hawaii?
+
+Hawaii is defined as a 50km buffer around the Hawaii boundaries.
+This area is divided into the main and north-west Hawaiian islands by a line
+between Niihau and Nihoa. For demonstration we add a line after Laysan.
+
+### Make a buffer around Hawaii
+
+```{r}
+# get a buffer around hawaii boundaries
+# this is done automatically in the function check_hawaii_endemic
+hawaii_buffer <- lapply(hawaii_boundaries, function(x) {
+  x <- st_read(x)
+  x <- st_transform(x, 2782)
+  x <- st_buffer(x, 50 * 1000)
+  x <- st_union(x)
+  x <- st_transform(x, 4326)
+})
+
+# Reduce and join
+hawaii_buffer <- Reduce(c, hawaii_buffer)
+
+# notice the overlap
+plot(hawaii_buffer,
+     col = "grey90",
+     main = "Notice the overlap"); axis(1); axis(2)
+```
+
+### Demarcate the regions
+
+```{r}
+# the demarcation points are function defaults for now
+hawaii_regions <- get_voronoi_area(
+  area_of_interest = hawaii_buffer
+)
+
+# plot for sanity check
+plot(hawaii_regions$regions, 
+     reset = F,
+     main = "Does this look alright?"); axis(1); axis(2)
+plot(hawaii_regions$demarcation_areas,
+     col = NA,
+     add = T)
+```
+
+
