@@ -75,7 +75,7 @@ check_endemic_hawaii <- function(
 
   # determine species overlap with each of the split buffer objects
   overlaps <- end_check_endemic(
-    aoi = x,
+    aoi = hawaii_regions,
     utm_epsg_code = 2782,
     buffer_distance_km = 0,
     sp_range = species_range
