@@ -14,8 +14,7 @@ demarcate_regions <- function(
     main_islands = c(-160.1, 21.8),
     nwhi = c(-161.9, 23),
     more_west = c(-172, 25)
-  )
-) {
+  )) {
 
   # checks
   assertthat::assert_that(
@@ -44,8 +43,10 @@ demarcate_regions <- function(
   # prepare points for voronoi
   voronoi_points <- Reduce(rbind, region_demarcation_points)
   voronoi_points <- sf::st_multipoint(voronoi_points)
-  aoi_voronoi <- sf::st_voronoi(voronoi_points,
-                                sf::st_union(area_of_interest))
+  aoi_voronoi <- sf::st_voronoi(
+    voronoi_points,
+    sf::st_union(area_of_interest)
+  )
   # convert to sfc
   aoi_voronoi <- Reduce(c, aoi_voronoi)
   aoi_voronoi <- sf::st_sfc(aoi_voronoi)
@@ -58,7 +59,8 @@ demarcate_regions <- function(
   # get crossed interesections in case there are multiple points
   aoi_regions <- sf::st_intersection(
     sf::st_union(area_of_interest),
-    aoi_voronoi)
+    aoi_voronoi
+  )
 
   # determine which area covers which demarcated region
   voronoi_points <- sf::st_sfc(voronoi_points, crs = 4326)
@@ -83,6 +85,8 @@ demarcate_regions <- function(
   aoi_regions <- sf::st_sf(aoi_regions, crs = 4326)
 
   # return
-  return(list(regions = aoi_regions,
-              demarcation_areas = aoi_voronoi))
+  return(list(
+    regions = aoi_regions,
+    demarcation_areas = aoi_voronoi
+  ))
 }
