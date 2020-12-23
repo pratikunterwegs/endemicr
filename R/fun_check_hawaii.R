@@ -8,7 +8,7 @@
 #' off Hawaii'?
 #' @param species_range A species range as sf-POLYGON object
 #' or spatial data file names.
-#' @param region_demarcation_points A data.frame, matrix, or list of 2-element
+#' @param region_demarcation_points A list of 2-element
 #' vectors which will be used to construct Voronoi polygons from the
 #' Hawaii buffer. Set to Niihau (main_islands) and Nihoa (NWHI).
 #'
@@ -33,7 +33,7 @@ check_endemic_hawaii <- function(
 
   # basic checks on species range
   # polygon check is on
-  species_range <- end_check_area(species_range)
+  species_range <- endemicr:::end_check_area(species_range)
 
   # union features within list of Hawaii features
   hawaii_land_features <- lapply(FUN = sf::st_union,
@@ -58,54 +58,19 @@ check_endemic_hawaii <- function(
   # union the two buffers and voronoi based on points
   hawaii_unified_buffer <- Reduce(f = c, x = hawaii_buffer)
 
-  # prepare points for voronoi
-  voronoi_points <- Reduce(rbind, region_demarcation_points)
-  voronoi_points <- sf::st_multipoint(voronoi_points)
-  # voronoi_points <- sf::st_sfc(voronoi_points)
-  # sf::st_crs(voronoi_points) <- 4326
-  hawaii_voronoi <- sf::st_voronoi(voronoi_points,
-                                   sf::st_union(hawaii_unified_buffer))
-  # convert to sfc
-  hawaii_voronoi <- lapply(X = hawaii_voronoi, sf::st_sfc)
-
-  # set all crs
-  hawaii_voronoi <- lapply(hawaii_voronoi, function(x) {
-    sf::st_crs(x) <- 4326
-    return(x)
-  })
-
-  # get crossed interesections in case there are multiple points
-  hawaii_split_buffer <- lapply(hawaii_voronoi, function(x) {
-    sf::st_intersection(hawaii_unified_buffer, x)
-  })
-
-  # c the voronoi buffer
-  hawaii_voronoi <- Reduce(c, hawaii_voronoi)
-  # prep the point for id as sfc
-  voronoi_points <- sf::st_sfc(voronoi_points, crs = 4326)
-
-  # which area has which name
-  name_order <- sf::st_within(st_cast(voronoi_points, "POINT"),
-                              hawaii_voronoi)
-  # unlist
-  name_order <- unlist(name_order)
-
-  # union these components of the split
-  hawaii_split_buffer <- lapply(hawaii_split_buffer, sf::st_union)
+  # use the voronoi function to divide the archipelago
+  hawaii_regions <- endemicr::demarcate_regions(
+    area_of_interest = hawaii_unified_buffer,
+    region_demarcation_points = region_demarcation_points
+  )
 
   # determine species overlap with each of the split buffer objects
-  overlaps <- lapply(hawaii_split_buffer, function(x) {
-    end_check_endemic(
+  overlaps <- end_check_endemic(
       aoi = x,
       utm_epsg_code = 2782,
       buffer_distance_km = 0,
       sp_range = species_range
-    )
-  })
-
-  # make data
-  overlaps <- data.frame(region = names(region_demarcation_points)[name_order],
-                         p_species_range = unlist(overlaps))
+  )
 
   return(overlaps)
 
