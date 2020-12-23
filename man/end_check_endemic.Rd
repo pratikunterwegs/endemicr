@@ -8,7 +8,7 @@ end_check_endemic(aoi, utm_epsg_code, buffer_distance_km, sp_range)
 }
 \arguments{
 \item{aoi}{A spatial representation of the area in which the
-species is expected to be endemic. May be any GDAL compatible file, or an
+species is expected to be endemic. Must be an
 \code{sf}-*POLYGON. Assumed to be in the WGS84 system (normal long-lat).}
 
 \item{utm_epsg_code}{An EPSG code (see e.g. epsg.io/4326) for the UTM system

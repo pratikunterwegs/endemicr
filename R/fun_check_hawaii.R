@@ -31,6 +31,8 @@ check_endemic_hawaii <- function(
     FUN = sf::st_read
   )
 
+  # read range
+  species_range <- sf::st_read(species_range)
   # basic checks on species range
   # polygon check is on
   end_check_area(species_range)
@@ -74,7 +76,7 @@ check_endemic_hawaii <- function(
 
   # determine species overlap with each of the split buffer objects
   overlaps <- end_check_endemic(
-    aoi = hawaii_regions,
+    aoi = hawaii_regions$regions,
     utm_epsg_code = 2782,
     buffer_distance_km = 0,
     sp_range = species_range
