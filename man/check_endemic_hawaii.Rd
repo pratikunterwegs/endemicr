@@ -28,7 +28,7 @@ Hawaii buffer. Set to Niihau (main_islands) and Nihoa (NWHI).}
 or spatial data file names.}
 }
 \value{
-We'll see.
+A data frame of the species global range in Hawaii.
 }
 \description{
 Check Hawaii endemicity
