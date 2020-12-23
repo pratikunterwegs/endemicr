@@ -66,7 +66,7 @@ lapply(hawaii_boundaries, function(x) {
 ## Look at fish range
 
 ```{r}
-# read in
+# read in the example fish Chaetodon ornatissimus
 fish_range_sf <- st_read(fish_range)
 
 # plot
@@ -121,4 +121,17 @@ plot(hawaii_regions$demarcation_areas,
      add = T)
 ```
 
+### Get _p_(global range) in each area
+
+```{r}
+# proportionof the global range in each area of hawaii
+range_in_hawaii <- check_endemic_hawaii(
+  hawaii_land_features = hawaii_boundaries,
+  buffer_distance_km = 50, 
+  species_range = fish_range
+)
+
+# print this
+range_in_hawaii
+```
 
