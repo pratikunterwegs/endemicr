@@ -6,9 +6,9 @@
 \usage{
 check_endemic_hawaii(
   hawaii_land_features = list(),
-  buffer_distance_km = 50,
+  buffer_distance_km = 500,
   region_demarcation_points = list(main_islands = c(-160.1, 21.8), nwhi = c(-161.9,
-    23), more_west = c(-172, 25)),
+    23)),
   species_range
 )
 }

@@ -7,15 +7,17 @@
 demarcate_regions(
   area_of_interest,
   region_demarcation_points = list(main_islands = c(-160.1, 21.8), nwhi = c(-161.9,
-    23), more_west = c(-172, 25))
+    23))
 )
 }
 \arguments{
-\item{area_of_interest}{An sf-object showing the area of interest.}
+\item{area_of_interest}{An sf-object showing the area of interest.
+Must have a CRS. Voronoi points will be converted to this CRS.}
 
 \item{region_demarcation_points}{A list of 2-element
 vectors which will be used to construct Voronoi polygons from the
-Hawaii buffer. Set to Niihau (main_islands) and Nihoa (NWHI).}
+Hawaii buffer. Set to Niihau (main_islands) and Nihoa (NWHI).
+Must be specified in decimal degrees (WGS84 CRS: EPSG code = 4326).}
 }
 \value{
 An sf-object with the area of interest demarcated into regions.
