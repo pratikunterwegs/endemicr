@@ -30,6 +30,7 @@ hawaii_boundaries <- list("../inst/boundary_main_islands/",
 
 # prepare fish range as string
 fish_range <- "../tests/testdata/example_fish.shp"
+bad_fish <- "../tests/testdata/problem_fish/data_0.shp"
 ```
 
 ## Read and plot Hawaii
@@ -109,8 +110,11 @@ plot(hawaii_buffer,
 ```{r}
 # the demarcation points are function defaults for now
 hawaii_regions <- demarcate_regions(
-  area_of_interest = hawaii_buffer
-)
+  area_of_interest = hawaii_buffer,
+  region_demarcation_points = list(
+    main_islands = c(-160.1, 21.8),
+    nwhi = c(-161.9, 23)
+))
 
 # plot for sanity check
 plot(hawaii_regions$regions, 
@@ -125,13 +129,29 @@ plot(hawaii_regions$demarcation_areas,
 
 ```{r}
 # proportionof the global range in each area of hawaii
+# this is an endemic fish
 range_in_hawaii <- check_endemic_hawaii(
   hawaii_land_features = hawaii_boundaries,
-  buffer_distance_km = 50, 
-  species_range = fish_range
-)
+  buffer_distance_km = 500, 
+  species_range = bad_fish,
+  region_demarcation_points = list(
+    main_islands = c(-160.1, 21.8),
+    nwhi = c(-161.9, 23)
+))
 
 # print this
 range_in_hawaii
+```
+
+```{r}
+# check a global fish
+range_in_hawaii <- check_endemic_hawaii(
+  hawaii_land_features = hawaii_boundaries,
+  buffer_distance_km = 500, 
+  species_range = fish_range,
+  region_demarcation_points = list(
+    main_islands = c(-160.1, 21.8),
+    nwhi = c(-161.9, 23)
+))
 ```
 
