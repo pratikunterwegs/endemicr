@@ -41,13 +41,13 @@ end_check_endemic <- function(aoi,
         !sf::st_is_longlat(sf::st_crs(utm_epsg_code)),
         msg = "check_endemic: EPSG code is for a geographic system"
       )
-    }
 
-    # transform area of interest to the supplied UTM CRS
-    aoi <- sf::st_transform(
-      x = aoi,
-      crs = utm_epsg_code
-    )
+      # transform area of interest to the supplied UTM CRS
+      aoi <- sf::st_transform(
+        x = aoi,
+        crs = utm_epsg_code
+      )
+    }
 
     # convert argument to metres
     buffer_distance_km <- buffer_distance_km * 1000
@@ -58,17 +58,8 @@ end_check_endemic <- function(aoi,
       x = aoi,
       dist = buffer_distance_km
     )
-
-    # retransform to geographic coordinates
-    # aoi_buffer <- sf::st_transform(
-    #   x = aoi_buffer,
-    #   crs = 4326
-    # )
   } else {
-    aoi_buffer <- sf::st_transform(
-      x = aoi,
-      crs = utm_epsg_code
-    )
+    aoi_buffer <- aoi
   }
 
   # transform species range
