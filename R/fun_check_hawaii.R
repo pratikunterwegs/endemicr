@@ -19,8 +19,7 @@ check_endemic_hawaii <- function(
   buffer_distance_km = 50,
   region_demarcation_points = list(
     main_islands = c(-160.1, 21.8),
-    nwhi = c(-161.9, 23),
-    more_west = c(-172, 25)
+    nwhi = c(-161.9, 23)
   ),
   species_range) {
 
@@ -51,18 +50,18 @@ check_endemic_hawaii <- function(
     crs = 2782
   )
 
+  # simplify to 10km
+  hawaii_land_features <- Map(
+    f = sf::st_simplify,
+    x = hawaii_land_features,
+    dTolerance = 10000
+  )
+
   # draw buffer of specified size around each feature
   hawaii_buffer <- Map(
     f = sf::st_buffer,
     x = hawaii_land_features,
     dist = buffer_distance_km * 1000
-  )
-
-  # re transform to WGS84 (the crs of the fish range)
-  hawaii_buffer <- Map(
-    f = sf::st_transform,
-    x = hawaii_buffer,
-    crs = 4326
   )
 
   # union the two buffers and voronoi based on points
