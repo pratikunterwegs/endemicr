@@ -1,5 +1,3 @@
-
-
 #' Check endemicity based on species range.
 #'
 #' @param aoi A spatial representation of the area in which the
@@ -62,13 +60,19 @@ end_check_endemic <- function(aoi,
     )
 
     # retransform to geographic coordinates
-    aoi_buffer <- sf::st_transform(
-      x = aoi_buffer,
-      crs = 4326
-    )
+    # aoi_buffer <- sf::st_transform(
+    #   x = aoi_buffer,
+    #   crs = 4326
+    # )
   } else {
-    aoi_buffer <- aoi
+    aoi_buffer <- sf::st_transform(
+      x = aoi,
+      crs = utm_epsg_code
+    )
   }
+
+  # transform species range
+  species_range <- sf::st_transform(sp_range, crs = utm_epsg_code)
 
   # check intersection with species range
   # first check for matching crs
