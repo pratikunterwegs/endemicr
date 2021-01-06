@@ -62,9 +62,16 @@ end_check_endemic <- function(aoi,
     aoi_buffer <- aoi
   }
 
-  # transform species range
-  sp_range <- sf::st_transform(sp_range,
-                               crs = sf::st_crs(aoi_buffer))
+  #### operations on species range ####
+  # global species ranges cannot be transformed to local
+  # crs-es. we extract the species range inside the localised area
+  # and check that area's overlap with the aoi
+  # and get its area a proportion of the whole
+
+  # first crop the species range to a buffer and transform to wgs84
+  aoi_buffer <- sf::st_transform(aoi_buffer, 4326)
+  aoi_buffer <- sf::st_wrap_dateline(aoi_buffer,
+                                     options = c("WRAPDATELINE=YES"))
 
   # check intersection with species range
   # first check for matching crs
@@ -74,13 +81,15 @@ end_check_endemic <- function(aoi,
   )
 
   # get intersection
-  overlap <- sf::st_intersection(aoi_buffer, sp_range)
+  overlap <- sf::st_intersection(aoi_buffer, sp_range,
+                                 quiet = TRUE)
 
   # get
   # proportion of species range represented by the ovelap
   # with the area of interest
   # this is somewhat sensitive to the buffer size
-  pct_range <- as.double(sf::st_area(overlap) / sf::st_area(sp_range))
+  pct_range <- as.double(sf::st_area(overlap) /
+                           sf::st_area(sp_range))
 
   # assign dummy name if there is none
   if (!"name" %in% colnames(overlap)) {
