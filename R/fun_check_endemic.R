@@ -63,7 +63,8 @@ end_check_endemic <- function(aoi,
   }
 
   # transform species range
-  species_range <- sf::st_transform(sp_range, crs = utm_epsg_code)
+  sp_range <- sf::st_transform(sp_range,
+                               crs = sf::st_crs(aoi_buffer))
 
   # check intersection with species range
   # first check for matching crs
