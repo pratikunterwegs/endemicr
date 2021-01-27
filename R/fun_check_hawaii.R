@@ -6,6 +6,8 @@
 #' @param buffer_distance_km A buffer distance in kilometres. How far off the
 #' coast of Hawaii land features should species be considered to occur 'in/on/
 #' off Hawaii'?
+#' Please keep this distance under 300km to prevent it crossing the date
+#' line, which causes problems.
 #' @param species_range A species range as sf-POLYGON object
 #' or spatial data file names.
 #' @param region_demarcation_points A list of 2-element
@@ -16,12 +18,18 @@
 #' @export
 check_endemic_hawaii <- function(
   hawaii_land_features = list(),
-  buffer_distance_km = 500,
+  buffer_distance_km = 50,
   region_demarcation_points = list(
     main_islands = c(-160.1, 21.8),
     nwhi = c(-161.9, 23)
   ),
   species_range) {
+
+
+
+  if (buffer_distance_km > 300) {
+    warning("endemic_hawaii: buffer distance > 300km might cross date line")
+  }
 
   # basic checks on regions
   # polygon check must be off because nwhi are lines
