@@ -88,8 +88,10 @@ end_check_endemic <- function(aoi,
   # proportion of species range represented by the ovelap
   # with the area of interest
   # this is somewhat sensitive to the buffer size
+  # we use the sum of sp_range because some species ranges
+  # are two separate objects
   pct_range <- as.double(sf::st_area(overlap) /
-                           sf::st_area(sp_range))
+                           sum(sf::st_area(sp_range)))
 
   # assign dummy name if there is none
   if (!"name" %in% colnames(overlap)) {
