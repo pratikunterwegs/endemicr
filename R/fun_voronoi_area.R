@@ -10,11 +10,11 @@
 #' @return An sf-object with the area of interest demarcated into regions.
 #' @export
 demarcate_regions <- function(
-  area_of_interest,
-  region_demarcation_points = list(
-    main_islands = c(-160.1, 21.8),
-    nwhi = c(-161.9, 23)
-  )) {
+                              area_of_interest,
+                              region_demarcation_points = list(
+                                main_islands = c(-160.1, 21.8),
+                                nwhi = c(-161.9, 23)
+                              )) {
 
   # checks
   assertthat::assert_that(
@@ -67,7 +67,8 @@ demarcate_regions <- function(
 
   # THIS IS SOME NEW STUFF, A GEOMETRY COLLECTION
   aoi_voronoi <- sf::st_collection_extract(aoi_voronoi,
-                                           type = "POLYGON")
+    type = "POLYGON"
+  )
 
   # get crossed interesections in case there are multiple points
   aoi_regions <- sf::st_intersection(
@@ -84,7 +85,8 @@ demarcate_regions <- function(
 
   # make sf
   voronoi_points <- sf::st_sf(voronoi_points,
-                              crs = sf::st_crs(aoi_voronoi))
+    crs = sf::st_crs(aoi_voronoi)
+  )
 
   # which area has which name
   name_order <- sf::st_contains(aoi_voronoi, voronoi_points)
@@ -97,11 +99,12 @@ demarcate_regions <- function(
     geometry = aoi_regions
   )
   aoi_regions <- sf::st_sf(aoi_regions,
-                           crs = sf::st_crs(aoi_voronoi))
+    crs = sf::st_crs(aoi_voronoi)
+  )
 
   # free message
   message(
-    paste0("crs used is ", sf::st_crs(aoi_regions,)$input)
+    paste0("crs used is ", sf::st_crs(aoi_regions, )$input)
   )
 
   # return
