@@ -25,8 +25,9 @@ library(sf)
 
 ```{r}
 # prepare hawaii boundaries
-hawaii_boundaries <- list("../inst/boundary_main_islands/",
-                          "../inst/boundary_nwhi/")
+hawaii_boundaries <- list(
+  "../inst/boundary_main_islands/2010_Census_County_Boundaries.shp",
+  "../inst/boundary_nwhi/Coastline_-_Northwest_Hawaiian_Islands__NWHI_.shp")
 
 # prepare fish range as string
 fish_range <- "../tests/testdata/example_fish/example_fish.shp"
