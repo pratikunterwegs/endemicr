@@ -6,7 +6,7 @@
 \usage{
 check_endemic_hawaii(
   hawaii_land_features = list(),
-  buffer_distance_km = 500,
+  buffer_distance_km = 50,
   region_demarcation_points = list(main_islands = c(-160.1, 21.8), nwhi = c(-161.9,
     23)),
   species_range
@@ -18,7 +18,9 @@ data representations of land features of Hawaii.}
 
 \item{buffer_distance_km}{A buffer distance in kilometres. How far off the
 coast of Hawaii land features should species be considered to occur 'in/on/
-off Hawaii'?}
+off Hawaii'?
+Please keep this distance under 300km to prevent it crossing the date
+line, which causes problems.}
 
 \item{region_demarcation_points}{A list of 2-element
 vectors which will be used to construct Voronoi polygons from the
