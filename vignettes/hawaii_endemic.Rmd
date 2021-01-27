@@ -29,7 +29,7 @@ hawaii_boundaries <- list("../inst/boundary_main_islands/",
                           "../inst/boundary_nwhi/")
 
 # prepare fish range as string
-fish_range <- "../tests/testdata/example_fish.shp"
+fish_range <- "../tests/testdata/example_fish/example_fish.shp"
 bad_fish <- "../tests/testdata/problem_fish/data_0.shp"
 ```
 
