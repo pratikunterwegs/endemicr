@@ -113,7 +113,7 @@ end_check_endemic <- function(aoi,
     } else {
       overlap_data$region = "overall"
     }
-    overlap_data$p_range = 0
+    overlap_data$p_range = NA
   }
 
   overlap_data
