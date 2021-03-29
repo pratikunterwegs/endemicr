@@ -109,11 +109,16 @@ end_check_endemic <- function(aoi,
 
   if (nrow(overlap_data) == 0) {
     if ("name" %in% colnames(aoi)) {
-      overlap_data$region = aoi$name
+      region_names = aoi$name
     } else {
-      overlap_data$region = "overall"
+      region_names = "overall"
     }
-    overlap_data$p_range = NA
+    region_p_range = NA
+
+    overlap_data = data.frame(
+      region = region_names,
+      p_range = region_p_range
+    )
   }
 
   overlap_data
